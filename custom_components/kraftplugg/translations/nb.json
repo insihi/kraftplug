@@ -1,0 +1,79 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sett opp KraftPlugg",
+        "menu_options": {
+          "phone": "Logg inn med SMS",
+          "session": "Bruk en eksisterende Mitt Hjem-appøkt"
+        }
+      },
+      "phone": {
+        "title": "Logg inn i Mitt Hjem",
+        "description": "Skriv inn telefonnummeret som brukes i Mitt Hjem. En engangskode sendes på SMS.",
+        "data": {
+          "phone": "Telefonnummer"
+        }
+      },
+      "sms": {
+        "title": "Skriv inn SMS-koden",
+        "description": "Skriv inn engangskoden som ble sendt fra Mitt Hjem.",
+        "data": {
+          "sms_code": "SMS-kode"
+        }
+      },
+      "location": {
+        "title": "Velg måler",
+        "data": {
+          "meter_id": "Sted"
+        }
+      },
+      "session": {
+        "title": "Importer en eksisterende appøkt",
+        "description": "Dette avanserte valget importerer en innlogget Mitt Hjem-økt.",
+        "data": {
+          "access_token": "Tilgangstoken",
+          "refresh_token": "Fornyingsinformasjonskapsel",
+          "meter_id": "Måler-ID",
+          "meter_point_id": "Målepunkt-ID",
+          "location_name": "Navn"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kunne ikke koble til Haugaland Kraft",
+      "invalid_auth": "Mitt Hjem-økten er ugyldig",
+      "invalid_code": "SMS-koden ble ikke godtatt",
+      "invalid_meter": "KraftPlugg-leseren kunne ikke valideres",
+      "invalid_phone": "Telefonnummeret ble ikke godtatt",
+      "unknown": "Uventet feil"
+    },
+    "abort": {
+      "already_configured": "Denne KraftPluggen er allerede konfigurert",
+      "invalid_auth": "Mitt Hjem-økten er ugyldig",
+      "no_devices": "Fant ingen KraftPlugg-måler på denne kontoen",
+      "reauth_successful": "Autentiseringen ble oppdatert"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Effekt"
+      },
+      "energy_today": {
+        "name": "Energi i dag"
+      },
+      "reader_temperature": {
+        "name": "Lesertemperatur"
+      },
+      "last_seen": {
+        "name": "Sist sett"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Tilkobling"
+      }
+    }
+  }
+}

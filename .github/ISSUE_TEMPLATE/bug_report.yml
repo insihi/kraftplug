@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a reproducible problem with the KraftPlugg integration
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve KraftPlugg. Do not include phone numbers,
+        SMS codes, access tokens, refresh cookies, or full meter identifiers.
+  - type: input
+    id: integration_version
+    attributes:
+      label: Integration version
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: home_assistant_version
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.7.0
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the expected and actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Remove all private information before posting.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I restarted Home Assistant after installing or upgrading.
+          required: true
+        - label: I removed all credentials and personal data from this report.
+          required: true
+

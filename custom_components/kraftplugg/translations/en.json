@@ -1,0 +1,79 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up KraftPlugg",
+        "menu_options": {
+          "phone": "Sign in with SMS",
+          "session": "Use an existing Mitt Hjem app session"
+        }
+      },
+      "phone": {
+        "title": "Sign in to Mitt Hjem",
+        "description": "Enter the phone number used by Mitt Hjem. A one-time code will be sent by SMS.",
+        "data": {
+          "phone": "Phone number"
+        }
+      },
+      "sms": {
+        "title": "Enter the SMS code",
+        "description": "Enter the one-time code sent by Mitt Hjem.",
+        "data": {
+          "sms_code": "SMS code"
+        }
+      },
+      "location": {
+        "title": "Choose a meter",
+        "data": {
+          "meter_id": "Location"
+        }
+      },
+      "session": {
+        "title": "Import an existing app session",
+        "description": "This advanced option imports an authenticated Mitt Hjem session.",
+        "data": {
+          "access_token": "Access token",
+          "refresh_token": "Refresh cookie",
+          "meter_id": "Meter ID",
+          "meter_point_id": "Meter point ID",
+          "location_name": "Name"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to Haugaland Kraft",
+      "invalid_auth": "The Mitt Hjem session is invalid",
+      "invalid_code": "The SMS code was not accepted",
+      "invalid_meter": "The KraftPlugg reader could not be validated",
+      "invalid_phone": "The phone number was not accepted",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This KraftPlugg is already configured",
+      "invalid_auth": "The Mitt Hjem session is invalid",
+      "no_devices": "No KraftPlugg meter was found on this account",
+      "reauth_successful": "Authentication was updated"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Power"
+      },
+      "energy_today": {
+        "name": "Energy today"
+      },
+      "reader_temperature": {
+        "name": "Reader temperature"
+      },
+      "last_seen": {
+        "name": "Last seen"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Connectivity"
+      }
+    }
+  }
+}
