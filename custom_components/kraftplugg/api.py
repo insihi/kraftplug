@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Callable
+from collections.abc import AsyncIterator, Callable
 from datetime import UTC, datetime, timedelta
+import json
 import logging
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -21,6 +22,7 @@ from .const import (
     REFRESH_COOKIE_NAME,
     REQUEST_TIMEOUT,
     STROMME_URL,
+    STREAM_READ_TIMEOUT,
 )
 from .models import KraftPluggCredentials, KraftPluggLocation
 
@@ -83,6 +85,25 @@ def _location_name(location: dict[str, Any]) -> str:
     parts = [address.get("street"), address.get("city")]
     label = ", ".join(str(part) for part in parts if part)
     return label or "KraftPlugg"
+
+
+def _parse_power_reading(
+    payload: Any,
+) -> tuple[float, datetime | None] | None:
+    """Parse a live or historical power reading."""
+    if not isinstance(payload, dict):
+        return None
+    power_values = payload.get("powerValues")
+    if not isinstance(power_values, dict):
+        return None
+    value = power_values.get("activeImport")
+    if value is None:
+        return None
+    try:
+        power_w = float(value)
+    except (TypeError, ValueError):
+        return None
+    return power_w, _parse_datetime(payload.get("readTime"))
 
 
 class KraftPluggAuthenticator:
@@ -234,8 +255,69 @@ class KraftPluggApiClient:
             readings,
             key=lambda item: _parse_datetime(item.get("readTime")) or datetime.min.replace(tzinfo=UTC),
         )
-        value = (reading.get("powerValues") or {}).get("activeImport")
-        return (float(value) if value is not None else None, _parse_datetime(reading.get("readTime")))
+        return _parse_power_reading(reading) or (None, None)
+
+    async def async_stream_power(
+        self, *, allow_refresh: bool = True
+    ) -> AsyncIterator[tuple[float, datetime | None]]:
+        """Yield active-import readings from the KraftPlugg event stream."""
+        request_token = self._access_token
+        headers = {
+            **_common_headers(),
+            "Accept": "text/event-stream",
+            "Authorization": f"Bearer {request_token}",
+            "Cache-Control": "no-cache",
+            "MeterPointID": self.meter_point_id,
+        }
+        params = {
+            "key": API_KEY,
+            "meterid": self.meter_id,
+        }
+        timeout = aiohttp.ClientTimeout(
+            total=None,
+            sock_connect=REQUEST_TIMEOUT,
+            sock_read=STREAM_READ_TIMEOUT,
+        )
+        try:
+            async with self._session.get(
+                f"{STROMME_URL}/v1/sse",
+                params=params,
+                headers=headers,
+                timeout=timeout,
+            ) as response:
+                if response.status == 401 and allow_refresh:
+                    await response.read()
+                    await self._async_refresh_access_token(request_token)
+                    async for reading in self.async_stream_power(allow_refresh=False):
+                        yield reading
+                    return
+                if response.status in (401, 403):
+                    await response.read()
+                    raise KraftPluggAuthError("Mitt Hjem authentication expired")
+                if response.status >= 400:
+                    await response.read()
+                    raise KraftPluggError(
+                        f"KraftPlugg stream returned HTTP {response.status}"
+                    )
+
+                data_lines: list[str] = []
+                async for raw_line in response.content:
+                    line = raw_line.decode("utf-8", errors="replace").rstrip("\r\n")
+                    if not line:
+                        if reading := _parse_stream_event(data_lines):
+                            yield reading
+                        data_lines.clear()
+                    elif line.startswith("data:"):
+                        data_lines.append(line[5:].lstrip())
+
+                if reading := _parse_stream_event(data_lines):
+                    yield reading
+        except KraftPluggError:
+            raise
+        except (aiohttp.ClientError, asyncio.TimeoutError, ValueError) as err:
+            raise KraftPluggConnectionError(
+                "Could not receive live KraftPlugg data"
+            ) from err
 
     async def async_get_energy_today(self) -> float | None:
         """Return imported energy since local midnight in kWh."""
@@ -360,6 +442,19 @@ def _common_headers() -> dict[str, str]:
         "HKAppVersion": APP_VERSION,
         "HKAppBuildVersion": APP_BUILD_VERSION,
     }
+
+
+def _parse_stream_event(
+    data_lines: list[str],
+) -> tuple[float, datetime | None] | None:
+    """Parse one server-sent event without failing the stream."""
+    if not data_lines:
+        return None
+    try:
+        payload = json.loads("\n".join(data_lines))
+    except (TypeError, ValueError):
+        return None
+    return _parse_power_reading(payload)
 
 
 async def _response_json(response: aiohttp.ClientResponse) -> dict[str, Any]:

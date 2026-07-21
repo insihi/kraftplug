@@ -5,8 +5,8 @@
   "config_flow": true,
   "documentation": "https://github.com/insihi/kraftplug",
   "integration_type": "device",
-  "iot_class": "cloud_polling",
+  "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/insihi/kraftplug/issues",
   "requirements": [],
-  "version": "0.1.1"
+  "version": "0.2.0"
 }

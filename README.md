@@ -56,9 +56,10 @@ from **Settings > Devices & services**.
 2. Enter the one-time code sent by SMS.
 3. If the account has more than one meter, choose the location to add.
 
-The integration polls current power every 30 seconds. Energy, temperature, and
-reader status are refreshed about every five minutes to avoid unnecessary cloud
-calls.
+The integration uses the same live event stream as the Mitt Hjem app for current
+power. A 30-second poll remains available as an automatic fallback if the stream
+is interrupted. Energy, temperature, and reader status are refreshed about every
+five minutes to avoid unnecessary cloud calls.
 
 ## Data and privacy
 
