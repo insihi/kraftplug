@@ -3,10 +3,10 @@
   "name": "KraftPlugg",
   "codeowners": ["@insihi"],
   "config_flow": true,
-  "documentation": "https://github.com/insihi/home-assistant-kraftplugg",
+  "documentation": "https://github.com/insihi/kraftplug",
   "integration_type": "device",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/insihi/home-assistant-kraftplugg/issues",
+  "issue_tracker": "https://github.com/insihi/kraftplug/issues",
   "requirements": [],
   "version": "0.1.0"
 }

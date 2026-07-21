@@ -4,8 +4,8 @@
   <img src="custom_components/kraftplugg/brand/icon.png" alt="KraftPlugg integration icon" width="128">
 </p>
 
-[![HACS validation](https://github.com/insihi/home-assistant-kraftplugg/actions/workflows/validate.yml/badge.svg)](https://github.com/insihi/home-assistant-kraftplugg/actions/workflows/validate.yml)
-[![GitHub release](https://img.shields.io/github/v/release/insihi/home-assistant-kraftplugg)](https://github.com/insihi/home-assistant-kraftplugg/releases)
+[![HACS validation](https://github.com/insihi/kraftplug/actions/workflows/validate.yml/badge.svg)](https://github.com/insihi/kraftplug/actions/workflows/validate.yml)
+[![GitHub release](https://img.shields.io/github/v/release/insihi/kraftplug)](https://github.com/insihi/kraftplug/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 An unofficial Home Assistant integration for the Haugaland Kraft **KraftPlugg**
@@ -34,10 +34,10 @@ Home Assistant.
 
 ### HACS
 
-[![Open your Home Assistant instance and add this repository to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=insihi&repository=home-assistant-kraftplugg&category=integration)
+[![Open your Home Assistant instance and add this repository to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=insihi&repository=kraftplug&category=integration)
 
 1. Open the button above, or add
-   `https://github.com/insihi/home-assistant-kraftplugg` as an **Integration**
+   `https://github.com/insihi/kraftplug` as an **Integration**
    under **HACS > Custom repositories**.
 2. Download **KraftPlugg** in HACS.
 3. Restart Home Assistant.
@@ -77,7 +77,7 @@ send analytics or account data anywhere else.
 ## Support
 
 Report bugs and API changes in the
-[GitHub issue tracker](https://github.com/insihi/home-assistant-kraftplugg/issues).
+[GitHub issue tracker](https://github.com/insihi/kraftplug/issues).
 Do not include SMS codes, phone numbers, access tokens, refresh cookies, or full
 meter identifiers in an issue.
 
