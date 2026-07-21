@@ -56,8 +56,9 @@ from **Settings > Devices & services**.
 2. Enter the one-time code sent by SMS.
 3. If the account has more than one meter, choose the location to add.
 
-The integration polls current power every 60 seconds. Energy, temperature, and
-reader status are refreshed every few minutes to avoid unnecessary cloud calls.
+The integration polls current power every 30 seconds. Energy, temperature, and
+reader status are refreshed about every five minutes to avoid unnecessary cloud
+calls.
 
 ## Data and privacy
 
