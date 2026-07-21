@@ -19,6 +19,7 @@ from .const import (
     SLOW_REFRESH_INTERVAL,
     STREAM_RECONNECT_DELAY,
     STREAM_RECONNECT_MAX_DELAY,
+    STREAM_UPDATE_INTERVAL,
 )
 from .models import KraftPluggData
 
@@ -46,6 +47,7 @@ class KraftPluggCoordinator(DataUpdateCoordinator[KraftPluggData]):
         self.client = client
         self._last_slow_refresh = 0.0
         self._slow_refresh_lock = asyncio.Lock()
+        self._last_stream_update = 0.0
 
     async def _async_update_data(self) -> KraftPluggData:
         previous = self.data or KraftPluggData()
@@ -76,8 +78,11 @@ class KraftPluggCoordinator(DataUpdateCoordinator[KraftPluggData]):
                         and power_read_time < previous.power_read_time
                     ):
                         continue
+                    if monotonic() - self._last_stream_update < STREAM_UPDATE_INTERVAL:
+                        continue
                     received_data = True
                     reconnect_delay = STREAM_RECONNECT_DELAY
+                    self._last_stream_update = monotonic()
                     data = replace(
                         previous,
                         power_w=power_w,
